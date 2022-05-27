@@ -20693,6 +20693,7 @@ export type CheckoutLineFragment = {
     __typename?: "ProductVariant";
     id: string;
     name: string;
+    attributes: Array<SelectedAttribute>
     pricing?: {
       __typename?: "VariantPricingInfo";
       onSale?: boolean | null;
@@ -20815,6 +20816,7 @@ export type CheckoutQuery = {
         __typename?: "ProductVariant";
         id: string;
         name: string;
+        attributes: Array<SelectedAttribute>
         pricing?: {
           __typename?: "VariantPricingInfo";
           onSale?: boolean | null;
@@ -22117,6 +22119,16 @@ export const CheckoutLineFragmentDoc = gql`
           }
         }
       }
+      attributes {
+        attribute {
+          name
+          id
+        }
+        values {
+          name
+          id
+        }
+    }
       name
       product {
         name
