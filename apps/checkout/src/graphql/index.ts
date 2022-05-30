@@ -22127,6 +22127,7 @@ export const CheckoutLineFragmentDoc = gql`
         values {
           name
           id
+          richText
         }
     }
       name
