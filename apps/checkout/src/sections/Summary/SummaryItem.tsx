@@ -14,9 +14,11 @@ interface LineItemProps {
 
 export const SummaryItem: React.FC<LineItemProps> = ({ line }) => {
   const readOnly = !isCheckoutLine(line);
-  const { productName, productImage, allAttributes } = getSummaryLineProps(line);
+  const { variantName, productName, productImage, allAttributes } = getSummaryLineProps(line);
 
   const formatMessage = useFormattedMessages();
+  console.log('VARIANT:', variantName)
+  console.log('ATTRIBUTES:', allAttributes)
 
   const fieldsToDisplay = ['Embark Date', 'Disembark Date', 'Duration', 'Rate Code', 'Ship Name']
   const attributesToDisplay: Record<string, any> = {}
