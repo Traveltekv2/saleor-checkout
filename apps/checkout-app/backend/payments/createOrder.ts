@@ -58,6 +58,8 @@ export const createOrder = async (
     throw error;
   }
 
+  console.log(data?.orderCreateFromCheckout?.errors);
+
   if (!data?.orderCreateFromCheckout?.order) {
     return {
       errors: data?.orderCreateFromCheckout?.errors.map((e) => e.code!) || [
