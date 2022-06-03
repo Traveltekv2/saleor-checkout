@@ -66,13 +66,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   let response: PayRequestResponse;
 
   if (body.provider === "mollie") {
-    const appUrl = getBaseUrl(req);
-    const url = await createMolliePayment({
-      order,
-      redirectUrl: body.redirectUrl,
-      appUrl,
-    });
-
+    console.log('order is: ')
+    console.log(order);
+    const url = await createMolliePayment(order.data, body.redirectUrl);
+    console.log('url:')
+    console.log(url)
     if (url) {
       response = {
         ok: true,
