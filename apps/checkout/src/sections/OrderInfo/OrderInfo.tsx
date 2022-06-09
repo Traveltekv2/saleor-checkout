@@ -18,7 +18,6 @@ export const OrderInfo = ({ order }: { order: OrderFragment }) => {
         authorizeStatus={order.authorizeStatus}
         chargeStatus={order.chargeStatus}
       />
-      <DeliverySection deliveryMethod={order.deliveryMethod} />
       {order.shippingAddress && (
         <Section>
           <SectionTitle>{formatMessage("shippingAddress")}</SectionTitle>
