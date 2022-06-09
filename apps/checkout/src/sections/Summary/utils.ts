@@ -51,7 +51,7 @@ type BreakdownItem = {
 }
 
 export const constructJSONAttributes = (
-  (priceItemRichText: string): {breakdownItemsPerPassenger: Record<string, Record<string, any>> | null, priceItems: Record<string, any> | null} => {
+  (priceItemRichText: string): any => {
 
   const priceItemJSON = JSON.parse(priceItemRichText ? priceItemRichText : "{}")
 
