@@ -66,9 +66,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   let response: PayRequestResponse;
 
   if (body.provider === "mollie") {
+    console.log('using mollie...')
     console.log('order is: ')
     console.log(order);
-    const url = await createMolliePayment(order.data, body.redirectUrl);
+    const url = await createMolliePayment(order, body.redirectUrl);
     console.log('url:')
     console.log(url)
     if (url) {
@@ -84,6 +85,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json(response);
     }
   } else if (body.provider === "adyen") {
+    console.log('using adyen...')
+    console.log('order is: ')
+    console.log(order);
     const paymentUrl = await createAdyenPayment(order, body.redirectUrl);
 
     if (paymentUrl) {

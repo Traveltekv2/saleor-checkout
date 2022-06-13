@@ -14,20 +14,6 @@ export const useCheckoutFinalize = () => {
   const { checkoutPay, loading } = usePay();
   const { setApiErrors, hasErrors } = useErrors<FormData>("userRegister");
 
-  const checkoutPay = async () => {
-    const redirectUrl = getRedirectUrl();
-    const result = await pay({
-      provider: "mollie",
-      checkoutId: checkout?.id,
-      totalAmount: checkout?.totalPrice?.gross?.amount as number,
-      redirectUrl,
-    });
-
-    if (result?.data?.paymentUrl) {
-      window.location.replace(result?.data?.paymentUrl);
-    }
-  };
-
   const handleUserRegister = async (formData: FormData) => {
     const registerFormData = omit(formData, "createAccount");
     // adding redirect url because api is broken and requires it
@@ -48,7 +34,7 @@ export const useCheckoutFinalize = () => {
 
     if (!hasErrors) {
       checkoutPay({
-        provider: "adyen",
+        provider: "mollie",
         checkoutId: checkout?.id,
         totalAmount: checkout?.totalPrice?.gross?.amount as number,
       });

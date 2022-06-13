@@ -7,6 +7,7 @@ import { getMollieClient } from "./utils";
 export const verifyPayment = async (
   id: string
 ): Promise<TransactionCreateMutationVariables | undefined> => {
+  console.log('webhook launched...')
   const mollieClient = await getMollieClient();
 
   const { status, amountCaptured, metadata, method, amount } =

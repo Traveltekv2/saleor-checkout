@@ -2,9 +2,9 @@ export * from "./createPayment";
 export * from "./webhookHandler";
 
 import createMollieClient, { OrderStatus, PaymentMethod } from "@mollie/api-client";
-import { OrderFragment, TransactionCreateMutationVariables } from "@/graphql";
-import { envVars } from "@/constants";
-import { formatRedirectUrl } from "@/backend/payments/utils";
+import { OrderFragment, TransactionCreateMutationVariables } from "@/checkout-app/graphql";
+import { envVars } from "@/checkout-app/constants";
+import { formatRedirectUrl } from "@/checkout-app/backend/payments/utils";
 
 import {
   getDiscountLines,
@@ -17,6 +17,8 @@ export const mollieClient = createMollieClient({
   apiKey: process.env.MOLLIE_API_KEY!,
 });
 
+console.log(process.env.MOLLIE_API_KEY)
+
 export const createMolliePayment = async (
   data: OrderFragment,
   redirectUrl: string
@@ -26,12 +28,12 @@ export const createMolliePayment = async (
   const lines = getLines(data.lines);
   console.log(envVars.appUrl);
   console.log('URLS REDIRECT')
-  console.log(formatRedirectUrl(redirectUrl, data.token))
+  console.log(formatRedirectUrl(redirectUrl, data.id))
   const mollieData = await mollieClient.orders.create({
     orderNumber: data.number!,
     webhookUrl: `${envVars.appUrl}/api/webhooks/mollie`,
     locale: "en_US",
-    redirectUrl: formatRedirectUrl(redirectUrl, data.token),
+    redirectUrl: formatRedirectUrl(redirectUrl, data.id),
     metadata: {
       orderId: data.id,
     },
@@ -75,7 +77,11 @@ export const verifyPayment = async (
 ): Promise<TransactionCreateMutationVariables | undefined> => {
   const { status, amountCaptured, metadata, method, amount } =
     await mollieClient.orders.get(id);
-
+  console.log('status: ', status)
+  console.log('amountCaptured: ', amountCaptured)
+  console.log('metadata: ', metadata)
+  console.log('method: ', method)
+  console.log('amount: ', amount)
   if (status === OrderStatus.authorized) {
     return {
       id: metadata.orderId,
