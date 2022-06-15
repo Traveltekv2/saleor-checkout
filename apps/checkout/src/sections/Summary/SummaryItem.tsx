@@ -38,7 +38,7 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
     console.log(remainingAttributes)
 
 
-  const { breakdownItemsPerPassenger, priceItems } = priceItem && constructJSONAttributes(priceItem)
+  // const { breakdownItemsPerPassenger, priceItems } = priceItem && constructJSONAttributes(priceItem)
 
   return (
     <li className="flex flex-row px-6 mb-6">
@@ -74,7 +74,7 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
               return <span key={`${attr}-${index}`} style={{display: 'block'}}>{`${attr}: ${remainingAttributes[attr]}`}</span>
             })}
             <br />
-            {Object.keys(breakdownItemsPerPassenger).map((passenger, index) => {
+            {/* {Object.keys(breakdownItemsPerPassenger).map((passenger, index) => {
               return( <>
                         <span key={`${passenger}-${index}`} style={{display: 'block'}}>
                           {`guest ${passenger} fare: ${breakdownItemsPerPassenger[passenger]['AMCT']['price']}`}
@@ -87,7 +87,7 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
                     )
             })}
             <br />
-            {`total: ${priceItems['totalFarePrice']}`}
+            {`total: ${priceItems['totalFarePrice']}`} */}
           </Text>
         </div>
         {readOnly && (
