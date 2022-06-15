@@ -1,31 +1,17 @@
-import { pay as payRequest } from "@/fetch";
-import { useCheckout } from "@/hooks/useCheckout";
-import { useFetch } from "@/hooks/useFetch";
-import { extractMutationErrors } from "@/lib/utils";
-import { useErrors } from "@/providers/ErrorsProvider";
+import { useCheckout } from "@/checkout/hooks/useCheckout";
+import { usePay } from "@/checkout/hooks/usePay";
+import { extractMutationErrors } from "@/checkout/lib/utils";
+import { useErrors } from "@/checkout/providers/ErrorsProvider";
 import { useAuth, useAuthState } from "@saleor/sdk";
 import { omit } from "lodash-es";
 
 import { FormData } from "./types";
 
-const getRedirectUrl = () => {
-  const url = new URL(window.location.href);
-  const redirectUrl = url.searchParams.get("redirectUrl");
-
-  // get redirectUrl from query params (passed from storefront)
-  if (redirectUrl) {
-    return redirectUrl;
-  }
-
-  // return existing url without any search params
-  return location.origin + location.pathname;
-};
-
 export const useCheckoutFinalize = () => {
   const { checkout } = useCheckout();
   const { register } = useAuth();
   const { user } = useAuthState();
-  const [{ loading }, pay] = useFetch(payRequest, { skip: true });
+  const { checkoutPay, loading } = usePay();
   const { setApiErrors, hasErrors } = useErrors<FormData>("userRegister");
 
   const checkoutPay = async () => {
@@ -61,7 +47,11 @@ export const useCheckoutFinalize = () => {
     }
 
     if (!hasErrors) {
-      checkoutPay();
+      checkoutPay({
+        provider: "mollie", // TODO: Hardcoded payment provider
+        checkoutId: checkout?.id,
+        totalAmount: checkout?.totalPrice?.gross?.amount as number,
+      });
     }
   };
 
