@@ -14,7 +14,7 @@ import "./OrderConfirmationStyles.css";
 export const OrderConfirmation = ({ orderId }: { orderId: string }) => {
   const { order } = useOrder(orderId);
   const formatMessage = useFormattedMessages();
-
+  
   return (
     <div className="page">
       <header className="order-header">

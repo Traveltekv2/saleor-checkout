@@ -67,14 +67,19 @@ export const createMolliePayment = async (
       method: PaymentMethod.paypal,
   });
   
-  console.log('mollieData: ' )
-  console.log(mollieData)
+  console.log('mollieData in index: ' )
+  await(console.log(mollieData))
+  console.log('mollieData lines...')
+  await mollieData.lines.forEach((line) => {
+    console.log(line)
+  })
   return mollieData._links.checkout;
 };
 
 export const verifyPayment = async (
   id: string
 ): Promise<TransactionCreateMutationVariables | undefined> => {
+  console.log('verifying payment...')
   const { status, amountCaptured, metadata, method, amount } =
     await mollieClient.orders.get(id);
   console.log('status: ', status)

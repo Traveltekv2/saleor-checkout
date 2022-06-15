@@ -30,6 +30,8 @@ export const useFetch = <
     try {
       const response = await fetchFn((immediateArgs || args) as TArgs);
       const result = await response.json();
+      await console.log('result in useFetch...', result)
+      await console.log('data in result useFetch...', result.data)
       setResult(result);
       return result;
     } catch (e) {
@@ -48,5 +50,6 @@ export const useFetch = <
     fetchData();
   }, [skip, ...useFetchArgsDeps]);
 
+  console.log('fetchData in useFetch: ', fetchData)
   return [{ data: result, loading, error }, fetchData];
 };

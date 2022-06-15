@@ -16,6 +16,7 @@ const getRedirectUrl = () => {
 };
 
 export const usePay = () => {
+  console.log('we are in usePay hooks')
   const [{ loading }, pay] = useFetch(payRequest, { skip: true });
 
   const checkoutPay = async ({
@@ -24,14 +25,16 @@ export const usePay = () => {
     totalAmount,
   }: Omit<CheckoutBody, "redirectUrl">) => {
     const redirectUrl = getRedirectUrl();
+    console.log('waiting for checkout pay...')
     const result = await pay({
       provider,
       checkoutId,
       totalAmount,
       redirectUrl,
     });
-
+    
     if (result?.data?.paymentUrl) {
+      console.log('result in usePay.ts: ', result)
       const newUrl = `?order=${result.orderId}`;
 
       window.history.replaceState(
@@ -50,13 +53,16 @@ export const usePay = () => {
     orderId,
   }: Omit<OrderBody, "redirectUrl">) => {
     const redirectUrl = getRedirectUrl();
+    await console.log('redirect url for paying...', redirectUrl)
+    await console.log('waiting for order pay...')
     const result = await pay({
       provider,
       orderId,
       redirectUrl,
     });
-
+    
     if (result?.data?.paymentUrl) {
+      await console.log('result in usePay.ts: ', result)
       window.location.href = result.data.paymentUrl;
     }
 

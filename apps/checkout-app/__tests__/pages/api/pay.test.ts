@@ -90,6 +90,7 @@ describe("/api/pay", () => {
     expect(mockedCreateMolliePayment).toHaveBeenCalledTimes(1);
 
     const data: PayRequestSuccessResponse = res._getJSONData();
+    console.log(data)
     expect(res.statusCode).toBe(200);
     expect(data.ok).toBe(true);
     expect(data.provider).toBe("mollie");

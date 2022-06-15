@@ -22,14 +22,16 @@ export const PaymentSection = ({
   chargeStatus: OrderChargeStatusEnum;
   authorizeStatus: OrderAuthorizeStatusEnum;
 }) => {
+  console.log('is the order paid? ', isPaid)
   const { loading, orderPay } = usePay();
   const formatMessage = useFormattedMessages();
 
-  const handlePay = () => {
-    orderPay({
+  const handlePay = async () => {
+    const result = await orderPay({
       provider: "mollie",
       orderId,
     });
+    console.log('result after paying...', result)
   };
 
   const renderPaymentDetails = () => {

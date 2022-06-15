@@ -8,7 +8,7 @@ import { Section, SectionTitle } from "./Section";
 
 export const OrderInfo = ({ order }: { order: OrderFragment }) => {
   const formatMessage = useFormattedMessages();
-
+  console.log('order is: ', order)
   return (
     <section className="flex-grow">
       <PaymentSection

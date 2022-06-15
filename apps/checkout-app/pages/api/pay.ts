@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { mollieClient } from "@/checkout-app/backend/payments/providers/mollie";
 import { createMolliePayment } from "@/checkout-app/backend/payments/providers/mollie";
 import { createOrder } from "@/checkout-app/backend/payments/createOrder";
 import { PaymentProviderID } from "@/checkout-app/types/common";
@@ -81,6 +82,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           paymentUrl: url.href,
         },
       };
+
+      await console.log('paid? ', response['ok'])
+      console.log('data of response: ', response.data)
 
       return res.status(200).json(response);
     }
