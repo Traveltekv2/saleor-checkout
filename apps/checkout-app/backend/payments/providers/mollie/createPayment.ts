@@ -9,6 +9,7 @@ import {
   parseAmountToString,
   getMollieClient,
 } from "./utils";
+import { PaymentMethod } from "@mollie/api-client";
 
 export interface CreateMolliePaymentData {
   order: OrderFragment;
@@ -61,6 +62,7 @@ export const createMolliePayment = async ({
           organizationName: order.shippingAddress.companyName,
         }
       : undefined,
+      method: PaymentMethod.paypal,
   });
 
   return { url: mollieData._links.checkout?.href, id: mollieData.id };
