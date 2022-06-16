@@ -157,6 +157,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (body.provider === "mollie") {
     const appUrl = getBaseUrl(req);
+    console.log('req is: ', req)
+    console.log('appUrl is: ', appUrl)
     const { url, id } = await createMolliePayment({
       order,
       redirectUrl: body.redirectUrl,

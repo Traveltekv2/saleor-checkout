@@ -40,7 +40,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "dev": "PORT=8001 craco start",
+    "dev": "PORT=8001 craco start --debug",
     "build": "craco build",
     "eject": "react-scripts eject",
     "format-code": "npx prettier --check \"src/**/*.@(tsx|ts|jsx|js)\" --write",

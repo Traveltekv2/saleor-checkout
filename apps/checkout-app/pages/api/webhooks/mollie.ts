@@ -10,6 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if ("id" in req.body) {
+    console.log('id found, compiling payment...')
     const paymentData = await verifyPayment(req.body.id);
 
     if (paymentData) {

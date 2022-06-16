@@ -9,7 +9,8 @@ import { OrderFragment, OrderLineFragment } from "@/checkout-app/graphql";
 
 export const getMollieClient = async () => {
   const metadata = await getPrivateSettings(envVars.apiUrl, false);
-  const apiKey = metadata.paymentProviders.mollie.apiKey!;
+  // const apiKey = metadata.paymentProviders.mollie.apiKey!;
+  const apiKey = process.env.MOLLIE_API_KEY!;
 
   return createMollieClient({
     apiKey,

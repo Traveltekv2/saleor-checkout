@@ -26,7 +26,8 @@ export const createMolliePayment = async ({
   const shippingLines = getShippingLines(order);
   const lines = getLines(order.lines);
   const mollieClient = await getMollieClient();
-
+  console.log('APP URL WEBHOOK IS: ', `${appUrl}/api/webhooks/mollie`)
+  console.log('ORDER IS FROM MOLLIE PAYMENT.....', order)
   const mollieData = await mollieClient.orders.create({
     orderNumber: order.number!,
     webhookUrl: `${appUrl}/api/webhooks/mollie`,
@@ -65,5 +66,6 @@ export const createMolliePayment = async ({
       method: PaymentMethod.paypal,
   });
 
+  console.log('redirect url...', mollieData._links.checkout?.href,)
   return { url: mollieData._links.checkout?.href, id: mollieData.id };
 };

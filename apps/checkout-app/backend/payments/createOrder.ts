@@ -57,7 +57,7 @@ export const createOrder = async (
   if (error) {
     throw error;
   }
-
+  await console.log('data from create order: ', data)
   console.log(data?.orderCreateFromCheckout?.errors);
 
   if (!data?.orderCreateFromCheckout?.order) {
