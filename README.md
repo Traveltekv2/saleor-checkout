@@ -75,10 +75,7 @@ It is important to maintain this repo and keep it update with upstream - saleor 
 
 ### Environment variables
 
-Environment variables are found in 1password, At this moment, we have 2 interesting branches:
-
-- Branch wip - Payments are fully paid in 2 quick successions, environment variables are found in one password and should be in monorepo .env file for the project to successfully work the way it was mentioned locally.
-- Branch update-fork-upstream - current branch that is being in progress and environment variables differ from branch wip. This should be also found in one password and follow the same procedure as branch wip. This branch does the payment in first trial.
+Environment variables are found in 1password - saleor checkout dev
 
 ## To Fully understand the project
 
