@@ -16,7 +16,7 @@ interface LineItemProps {
 export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmation }) => {
   const readOnly = !isCheckoutLine(line);
   //Summary Item is used before Paying and after Paying - each time is a different data layout and behavior
-  const { productName, allAttributes } = getSummaryLineProps(line);
+  const { totalPrice, productName, allAttributes } = getSummaryLineProps(line);
   const formatMessage = useFormattedMessages();
   
   //all attributes does not exist after paying
@@ -34,7 +34,7 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
   allAttributes?.forEach((attribute) => {
     attribute.name && remainingAttributesToDisplay.includes(attribute.name) ? remainingAttributes[attribute?.name] = attribute.value : 'N/A'
   })
-  const { totalPrice, breakdownItemsPerPassenger, priceItems } = priceItem && constructJSONAttributes(priceItem.value)
+  const { breakdownItemsPerPassenger, priceItems } = priceItem && constructJSONAttributes(priceItem.value)
   console.log(totalPrice)
 
   return (

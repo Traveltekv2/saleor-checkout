@@ -33,7 +33,8 @@ export const getSummaryLineProps = (
             name: attribute.key,
             value: attribute.value,
           }
-        })
+        }),
+        totalPrice: line.totalPrice.gross.amount
       }
     : {
         variantName: line.variantName,
@@ -44,7 +45,8 @@ export const getSummaryLineProps = (
             name: attribute.key,
             value: attribute.value,
           }
-        })
+        }),
+        totalPrice: line.totalPrice.gross.amount
       };
 
 
@@ -82,8 +84,6 @@ export const constructJSONAttributes = (
       priceItemJSON[0]['breakdown_items'].filter((breakdown: BreakdownItem) => 
         parseInt(breakdown.passenger_number) === i
       ).forEach((breakdown: BreakdownItem) => {
-        total = breakdown.code === 'AMCT' || breakdown.code === 'TXFS' ? total + parseInt(breakdown.price) : total
-
         breakdownPerPassenger[breakdown.code] = {
           code: breakdown.code,
           currency: breakdown.currency,
@@ -106,13 +106,11 @@ export const constructJSONAttributes = (
     return {
       breakdownItemsPerPassenger: breakdownItems,
       priceItems: priceItemJSON[0],
-      totalPrice: total,
     }
   } else {
     return {
     breakdownItemsPerPassenger: null,
     priceItems: null,
-    totalPrice: null,
   }
 }
 })
