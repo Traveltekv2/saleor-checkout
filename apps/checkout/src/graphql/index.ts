@@ -20740,6 +20740,7 @@ export type CheckoutFragment = {
     variant: {
       __typename?: "ProductVariant";
       id: string;
+      metadata: Array<MetadataItem>;
       name: string;
       pricing?: {
         __typename?: "VariantPricingInfo";
@@ -20786,7 +20787,8 @@ export type CheckoutLineFragment = {
     __typename?: "ProductVariant";
     id: string;
     name: string;
-    attributes: Array<SelectedAttribute>
+    metadata: Array<MetadataItem>;
+    attributes: Array<SelectedAttribute>;
     pricing?: {
       __typename?: "VariantPricingInfo";
       onSale?: boolean | null;
@@ -20919,7 +20921,8 @@ export type CheckoutQuery = {
         __typename?: "ProductVariant";
         id: string;
         name: string;
-        attributes: Array<SelectedAttribute>
+        metadata: Array<MetadataItem>;
+        attributes: Array<SelectedAttribute>;
         pricing?: {
           __typename?: "VariantPricingInfo";
           onSale?: boolean | null;
@@ -22043,6 +22046,7 @@ export type OrderLineFragment = {
   variant: {
     __typename?: "ProductVariant";
     id: string;
+    metadata: Array<MetadataItem>;
     name: string;
     attributes: Array<SelectedAttribute>
     pricing?: {
@@ -22154,7 +22158,8 @@ export type OrderFragment = {
       __typename?: "ProductVariant";
       id: string;
       name: string;
-      attributes: Array<SelectedAttribute>
+      metadata: Array<MetadataItem>;
+      attributes: Array<SelectedAttribute>;
       pricing?: {
         __typename?: "VariantPricingInfo";
         onSale?: boolean | null;
@@ -22268,7 +22273,8 @@ export type OrderQuery = {
         __typename?: "ProductVariant";
         id: string;
         name: string;
-        attributes: Array<SelectedAttribute>
+        metadata: Array<MetadataItem>;
+        attributes: Array<SelectedAttribute>;
         pricing?: {
           __typename?: "VariantPricingInfo";
           onSale?: boolean | null;
@@ -22369,6 +22375,11 @@ export const CheckoutLineFragmentDoc = gql`
     }
     variant {
       id
+      metadata{
+        key
+        value
+        __typename
+      }
       pricing {
         onSale
       }
@@ -22518,6 +22529,10 @@ export const OrderLineFragmentDoc = gql`
     variantName
     variant {
       id
+      metadata {
+        key
+        value
+      }
       pricing {
         onSale
         price {

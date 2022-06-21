@@ -25,6 +25,11 @@ fragment OrderLineFragment on OrderLine {
   variantName
   variant {
     id
+    metadata {
+      key
+      value
+      __typename
+    }
     pricing {
       onSale
       price {

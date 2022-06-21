@@ -14,7 +14,6 @@ interface LineItemProps {
 }
 
 export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmation }) => {
-  console.log(isOrderConfirmation)
   const readOnly = !isCheckoutLine(line);
   //Summary Item is used before Paying and after Paying - each time is a different data layout and behavior
   const { productName, allAttributes } = getSummaryLineProps(line);
@@ -22,23 +21,21 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
   
   //all attributes does not exist after paying
 
-  const priceItem = allAttributes?.filter(attr => attr.name == 'Price Items')[0].richText[0]
-  const productImage = isOrderConfirmation ? allAttributes?.filter(attr => attr.name === 'Deck Image')[0].value[0] : undefined
-
+  const priceItem = allAttributes?.filter(attr => attr.name === 'price_items')[0]
+  console.log(priceItem)
   console.log(allAttributes)
-  const remainingAttributesToDisplay = ['Cabin Grade Name', 'Cabin Grade Description', 
-                                        'Deck Code', 'Deck Level', 'Disembark Date', 
-                                        'Duration', 'Line Name', 'Ship Name']
-  if (isOrderConfirmation) remainingAttributesToDisplay.splice(0,0,'Cabin Number')
+  const productImage = isOrderConfirmation ? allAttributes?.filter(attr => attr.name === 'deck_image')[0].value : undefined
+
+  const remainingAttributesToDisplay = ['cabin_grade_name', 'cabin_grade_description', 
+                                        'deck_code', 'deck_level', 'disembark_date', 
+                                        'duration', 'line_name', 'ship_name']
+  if (isOrderConfirmation) remainingAttributesToDisplay.splice(0,0,'cabin_number')
   const remainingAttributes: Record<string, any> = {}
   allAttributes?.forEach((attribute) => {
-    attribute.name && remainingAttributesToDisplay.includes(attribute.name) ? remainingAttributes[attribute?.name] = attribute.value[0] : 'N/A'
+    attribute.name && remainingAttributesToDisplay.includes(attribute.name) ? remainingAttributes[attribute?.name] = attribute.value : 'N/A'
   })
-
-    console.log(remainingAttributes)
-
-
-  // const { breakdownItemsPerPassenger, priceItems } = priceItem && constructJSONAttributes(priceItem)
+  const { totalPrice, breakdownItemsPerPassenger, priceItems } = priceItem && constructJSONAttributes(priceItem.value)
+  console.log(totalPrice)
 
   return (
     <li className="flex flex-row px-6 mb-6">
@@ -74,7 +71,7 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
               return <span key={`${attr}-${index}`} style={{display: 'block'}}>{`${attr}: ${remainingAttributes[attr]}`}</span>
             })}
             <br />
-            {/* {Object.keys(breakdownItemsPerPassenger).map((passenger, index) => {
+            {Object.keys(breakdownItemsPerPassenger).map((passenger, index) => {
               return( <>
                         <span key={`${passenger}-${index}`} style={{display: 'block'}}>
                           {`guest ${passenger} fare: ${breakdownItemsPerPassenger[passenger]['AMCT']['price']}`}
@@ -87,7 +84,7 @@ export const SummaryItem: React.FC<LineItemProps> = ({ line , isOrderConfirmatio
                     )
             })} 
             <br />
-          {`total: ${priceItems['totalFarePrice']}`} */ }
+          {`total: ${totalPrice}`}
           </Text>
         </div>
         {readOnly && (

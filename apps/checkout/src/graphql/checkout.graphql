@@ -112,6 +112,11 @@ fragment CheckoutLineFragment on CheckoutLine {
   }
   variant {
     id
+    metadata {
+      key
+      value
+      __typename
+    }
     pricing {
       onSale
     }

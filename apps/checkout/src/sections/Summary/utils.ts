@@ -28,24 +28,21 @@ export const getSummaryLineProps = (
         variantName: line.variant.name,
         productName: line.variant.product.name,
         productImage: getThumbnailFromLine(line),
-        allAttributes: line.variant.attributes.map((attribute) => {
+        allAttributes: line.variant.metadata.map((attribute) => {
           return {
-            name: attribute.attribute.name,
-            value: attribute.values.map(valueObj => valueObj.name ),
-            richText: attribute.values.map(valueObj => valueObj.richText ),
+            name: attribute.key,
+            value: attribute.value,
           }
         })
-        
       }
     : {
         variantName: line.variantName,
         productName: line.productName,
         productImage: line.thumbnail,
-        allAttributes: line.variant.attributes.map((attribute) => {
+        allAttributes: line.variant.metadata.map((attribute) => {
           return {
-            name: attribute.attribute.name,
-            value: attribute.values.map(valueObj => valueObj.name ),
-            richText: attribute.values.map(valueObj => valueObj.richText ),
+            name: attribute.key,
+            value: attribute.value,
           }
         })
       };
@@ -57,56 +54,65 @@ type BreakdownItem = {
   description: string
   fareType: string
   name: string
-  passengerNumber: string
+  passenger_number: string
   price: string
   __typename: string
 }
 
 export const constructJSONAttributes = (
-  (priceItemRichText: string): any => {
-
-  const priceItemJSON = JSON.parse(priceItemRichText ? priceItemRichText : "{}")
+  (priceItem: string): any => {
+  priceItem = priceItem.replace(/'None'/g, '""')
+  priceItem = priceItem.replace(/'/g, '"')
+  priceItem = priceItem.replace(/None/g, '""')
+  priceItem = priceItem.replace(/False/g, "false")
+  priceItem = priceItem.replace(/True/g, "true")
+  console.log(priceItem)
+  const priceItemJSON = JSON.parse(priceItem ? priceItem : "{}")
+  console.log(priceItemJSON)
 
   if(priceItemJSON){
-    //priceItem full information is parsed through rich text attribute from query
-    console.log(JSON.parse(priceItemJSON.blocks[0].data.text))
-    const priceItemDataJSON = JSON.parse(priceItemJSON.blocks[0].data.text)
-   
-    const nbOfGuests = priceItemDataJSON.breakdownItems.filter((breakdown: BreakdownItem) => breakdown.code === 'AMCT').length
+    const nbOfGuests = priceItemJSON[0]['breakdown_items'].filter((breakdown: BreakdownItem) => breakdown.code === 'AMCT').length
     console.log(nbOfGuests)
 
     //full breakdown of each single passenger for easy accessibility and easy display
     const breakdownItems: any = {}
     let breakdownPerPassenger: Record<string, any> = {}
+    let total = 0
     for(let i = 1; i <= nbOfGuests; i++){
-      priceItemDataJSON.breakdownItems.filter((breakdown: BreakdownItem) => 
-        parseInt(breakdown.passengerNumber) === i
-      ).forEach((breakdown: BreakdownItem) => 
+      priceItemJSON[0]['breakdown_items'].filter((breakdown: BreakdownItem) => 
+        parseInt(breakdown.passenger_number) === i
+      ).forEach((breakdown: BreakdownItem) => {
+        total = breakdown.code === 'AMCT' || breakdown.code === 'TXFS' ? total + parseInt(breakdown.price) : total
+
         breakdownPerPassenger[breakdown.code] = {
           code: breakdown.code,
           currency: breakdown.currency,
           description: breakdown.description,
           fareType: breakdown.fareType,
           name: breakdown.name,
-          passengerNumber: breakdown.passengerNumber,
+          passengerNumber: breakdown.passenger_number,
           price: breakdown.price,
           __typename: breakdown.__typename
+          }
         }
       )
+
       breakdownItems[i] = breakdownPerPassenger
       breakdownPerPassenger = {}
     }
     
     console.log(breakdownItems)
-
+    console.log(total)
     return {
       breakdownItemsPerPassenger: breakdownItems,
-      priceItems: priceItemDataJSON,
+      priceItems: priceItemJSON[0],
+      totalPrice: total,
     }
   } else {
     return {
     breakdownItemsPerPassenger: null,
     priceItems: null,
+    totalPrice: null,
   }
 }
 })
