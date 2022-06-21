@@ -61,13 +61,17 @@ type BreakdownItem = {
   __typename: string
 }
 
+const validateJSONBeforeParse = (data: string) :string => {
+  data = data.replace(/None|'None'|False|True/g, '""')
+  data = data.replace(/'/g, '"')
+
+  return data
+}
+
 export const constructJSONAttributes = (
   (priceItem: string): any => {
-  priceItem = priceItem.replace(/'None'/g, '""')
-  priceItem = priceItem.replace(/'/g, '"')
-  priceItem = priceItem.replace(/None/g, '""')
-  priceItem = priceItem.replace(/False/g, "false")
-  priceItem = priceItem.replace(/True/g, "true")
+  priceItem = validateJSONBeforeParse(priceItem)
+
   console.log(priceItem)
   const priceItemJSON = JSON.parse(priceItem ? priceItem : "{}")
   console.log(priceItemJSON)
